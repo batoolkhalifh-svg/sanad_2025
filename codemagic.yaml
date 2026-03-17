@@ -6,23 +6,25 @@ workflows:
       flutter: stable
       xcode: latest
       groups:
-        - appstore_credentials  # هنا جميع مفاتيح App Store Connect
-        - ios_config            # هنا bundle ID وأي إعدادات iOS أخرى
+        - appstore_credentials
+        - ios_config
+
     scripts:
       - name: Install dependencies
         script: |
           flutter pub get
+
       - name: Build iOS
         script: |
           flutter build ios --release --no-codesign
+
     artifacts:
       - build/ios/ipa/*.ipa
+
     publishing:
       app_store_connect:
-        enable: true
-        api_key:
-          key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-          private_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        bundle_id: $BUNDLE_ID
+        api_key: ${APP_STORE_CONNECT_PRIVATE_KEY}
+        key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
+        issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
+        bundle_id: ${BUNDLE_ID}
         submit_for_review: true
