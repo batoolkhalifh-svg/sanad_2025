@@ -10,11 +10,11 @@ workflows:
         - ios_config
 
     scripts:
-      - name: Install dependencies
+      - name: تثبيت الحزم
         script: |
           flutter pub get
 
-      - name: Build iOS
+      - name: بناء تطبيق iOS
         script: |
           flutter build ios --release --no-codesign
 
@@ -26,5 +26,3 @@ workflows:
         api_key: ${APP_STORE_CONNECT_PRIVATE_KEY}
         key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
         issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
-        bundle_id: ${BUNDLE_ID}
-        submit_for_review: true
