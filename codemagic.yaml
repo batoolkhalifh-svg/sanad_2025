@@ -3,7 +3,6 @@ workflows:
     name: Build & Publish Sanad 2025 iOS
     max_build_duration: 60
     environment:
-      os: macos          # مهم جداً، لأنه iOS فقط على macOS
       flutter: stable
       xcode: latest
       groups:
@@ -21,7 +20,7 @@ workflows:
 
       - name: Build iOS Release
         script: |
-          flutter build ios --release
+          flutter build ios --release --no-codesign
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -31,10 +30,3 @@ workflows:
         api_key: AuthKey.p8
         key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
         issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
-
-    code_signing:
-      ios:
-        distribution_method: app_store
-        automatic_signing: true
-        team_id: ${APPLE_TEAM_ID}   # ضع هنا Apple Developer Team ID الخاص بك
-        bundle_id: ${BUNDLE_ID}     # com.sanad.edu
