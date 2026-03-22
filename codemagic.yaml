@@ -14,6 +14,10 @@ workflows:
         script: |
           flutter pub get
 
+      - name: إنشاء ملف المفتاح من Base64
+        script: |
+          echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
+
       - name: بناء تطبيق iOS
         script: |
           flutter build ios --release
@@ -23,6 +27,6 @@ workflows:
 
     publishing:
       app_store_connect:
-        api_key: ${APP_STORE_CONNECT_PRIVATE_KEY}
+        api_key: AuthKey.p8    # استخدم الملف اللي أنشأناه
         key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
         issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
