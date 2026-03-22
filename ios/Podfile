@@ -1,12 +1,13 @@
-# Podfile for Flutter project
-
 platform :ios, '12.0'
 
 use_frameworks!
 use_modular_headers!
 
+# هذا السطر مهم جدًا
+require File.expand_path(File.join('..', 'Flutter', 'podhelper.rb'))
+
 target 'Runner' do
-  # لا تستخدم flutter_install_all_ios_pods
+  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
 end
 
 post_install do |installer|
