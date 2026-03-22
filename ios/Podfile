@@ -6,8 +6,7 @@ use_frameworks!
 use_modular_headers!
 
 target 'Runner' do
-  # هذا السطر الحديث لتعريف Flutter pods
-  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
+  # لا تستخدم flutter_install_all_ios_pods
 end
 
 post_install do |installer|
