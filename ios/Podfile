@@ -1,12 +1,14 @@
-# Podfile for Flutter project
-
 platform :ios, '12.0'
 
 use_frameworks!
 use_modular_headers!
 
 target 'Runner' do
-  # Flutter pods
-  # استخدم هذا السطر الحديث بدل flutter_install_all_ios_pods
-  use_frameworks! # إذا تحتاج
+  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+  end
 end
