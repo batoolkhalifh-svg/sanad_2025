@@ -14,11 +14,19 @@ workflows:
         script: |
           flutter pub get
 
+      - name: تحديث Flutter و CocoaPods
+        script: |
+          flutter upgrade
+          cd ios
+          pod repo update
+          pod install
+          cd ..
+
       - name: إنشاء ملف App Store Connect Key من Base64
         script: |
           echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-      - name: Build iOS Release
+      - name: Build iOS Release بدون توقيع محلي
         script: |
           flutter build ios --release --no-codesign
 
