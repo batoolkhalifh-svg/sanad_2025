@@ -1,8 +1,9 @@
 workflows:
   ios-release:
-    name: Build Sanad 2025 iOS
+    name: Build & Publish Sanad 2025 iOS
     max_build_duration: 60
     environment:
+      os: macos          # مهم جداً، لأنه iOS فقط على macOS
       flutter: stable
       xcode: latest
       groups:
@@ -14,11 +15,11 @@ workflows:
         script: |
           flutter pub get
 
-      - name: إنشاء ملف المفتاح من Base64
+      - name: إنشاء ملف App Store Connect Key من Base64
         script: |
           echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-      - name: بناء تطبيق iOS
+      - name: Build iOS Release
         script: |
           flutter build ios --release
 
@@ -27,6 +28,13 @@ workflows:
 
     publishing:
       app_store_connect:
-        api_key: AuthKey.p8    # استخدم الملف اللي أنشأناه
+        api_key: AuthKey.p8
         key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
         issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
+
+    code_signing:
+      ios:
+        distribution_method: app_store
+        automatic_signing: true
+        team_id: ${APPLE_TEAM_ID}   # ضع هنا Apple Developer Team ID الخاص بك
+        bundle_id: ${BUNDLE_ID}     # com.sanad.edu
