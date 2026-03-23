@@ -9,26 +9,27 @@ workflows:
         - appstore_credentials
         - ios_config
 
-    scripts:
-      - name: تثبيت الحزم
-        script: |
-          flutter pub get
+   scripts:
+  - name: إعادة إنشاء iOS بشكل صحيح
+    script: |
+      flutter clean
+      rm -rf ios
+      flutter create .
+      flutter pub get
 
-      - name: تحديث Flutter و CocoaPods
-        script: |
-          flutter upgrade
-          cd ios
-          pod repo update
-          pod install
-          cd ..
+  - name: تثبيت CocoaPods
+    script: |
+      cd ios
+      pod install
+      cd ..
 
-      - name: إنشاء ملف App Store Connect Key من Base64
-        script: |
-          echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
+  - name: إنشاء ملف App Store Connect Key
+    script: |
+      echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-      - name: Build iOS Release بدون توقيع محلي
-        script: |
-          flutter build ios --release --no-codesign
+  - name: Build iOS Release
+    script: |
+      flutter build ipa --release
 
     artifacts:
       - build/ios/ipa/*.ipa
