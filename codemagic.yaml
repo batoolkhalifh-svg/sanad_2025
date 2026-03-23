@@ -2,6 +2,7 @@ workflows:
   ios-release:
     name: Build & Publish Sanad 2025 iOS
     max_build_duration: 60
+
     environment:
       flutter: stable
       xcode: latest
@@ -9,27 +10,27 @@ workflows:
         - appstore_credentials
         - ios_config
 
-   scripts:
-  - name: إعادة إنشاء iOS بشكل صحيح
-    script: |
-      flutter clean
-      rm -rf ios
-      flutter create .
-      flutter pub get
+    scripts:
+      - name: إعادة إنشاء iOS بشكل صحيح
+        script: |
+          flutter clean
+          rm -rf ios
+          flutter create .
+          flutter pub get
 
-  - name: تثبيت CocoaPods
-    script: |
-      cd ios
-      pod install
-      cd ..
+      - name: تثبيت CocoaPods
+        script: |
+          cd ios
+          pod install
+          cd ..
 
-  - name: إنشاء ملف App Store Connect Key
-    script: |
-      echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
+      - name: إنشاء ملف App Store Connect Key
+        script: |
+          echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-  - name: Build iOS Release
-    script: |
-      flutter build ipa --release
+      - name: Build iOS Release
+        script: |
+          flutter build ipa --release
 
     artifacts:
       - build/ios/ipa/*.ipa
