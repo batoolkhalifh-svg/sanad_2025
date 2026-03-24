@@ -7,7 +7,7 @@ workflows:
       flutter: stable
       xcode: latest
       groups:
-        - ios_config   # لازم تضيفي المتغيرات هنا
+        - ios_config   # تأكدي أن المتغيرات موجودة هنا
 
     scripts:
       - name: Clean & Get packages
@@ -25,9 +25,9 @@ workflows:
         script: |
           echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-      - name: Build iOS IPA
+      - name: Build iOS IPA for App Store
         script: |
-         flutter build ipa --release --export-method app-store
+          flutter build ipa --release --export-method app-store --build-name=1.0.2 --build-number=1
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -37,3 +37,6 @@ workflows:
         api_key: AuthKey.p8
         key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
         issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
+        bundle_id: com.sanad.edu
+        submit_for_review: true
+        release_type: automatic   # أو "manual" إذا تريدين الموافقة قبل النشر
