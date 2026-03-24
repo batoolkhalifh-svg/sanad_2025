@@ -4,7 +4,7 @@ use_frameworks!
 use_modular_headers!
 
 # هذا السطر مهم جدًا
-require File.expand_path(File.join('..', 'Flutter', 'podhelper.rb'))
+require File.expand_path(File.join(__dir__, 'Flutter', 'podhelper.rb'))
 
 target 'Runner' do
   flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
