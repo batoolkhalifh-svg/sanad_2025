@@ -7,7 +7,7 @@ workflows:
       flutter: stable
       xcode: latest
       groups:
-        - ios_config   # تأكدي أنك ضفتِ المتغيرات هنا: APP_STORE_CONNECT_PRIVATE_KEY, KEY_IDENTIFIER, ISSUER_ID, BUNDLE_ID
+        - ios_config
 
     scripts:
       - name: Clean & Get packages
@@ -33,5 +33,4 @@ workflows:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-        bundle_id: $BUNDLE_ID
-        release_type: AFTER_APPROVAL  # خيار تلقائي بعد الموافقة على التطبيق
+        submit_for_review: true   # خليها true لو بدك يروح مباشرة للمراجعة
