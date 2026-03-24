@@ -7,7 +7,6 @@ workflows:
       flutter: stable
       xcode: latest
       groups:
-        - appstore_credentials
         - ios_config
 
     scripts:
