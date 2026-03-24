@@ -1,6 +1,6 @@
 workflows:
   ios-release:
-    name: Build & Publish Sanad 2025 iOS
+    name: Build & Publish iOS
     max_build_duration: 60
 
     environment:
@@ -11,12 +11,44 @@ workflows:
         - ios_config
 
     scripts:
-      - name: إعادة إنشاء iOS بشكل صحيح
+      - name: تنظيف المشروع
         script: |
           flutter clean
-          rm -rf ios
-          flutter create .
           flutter pub get
+
+      - name: إنشاء مجلد Flutter
+        script: |
+          mkdir -p ios/Flutter
+
+      - name: إنشاء podhelper.rb
+        script: |
+          cat <<EOT > ios/Flutter/podhelper.rb
+          # frozen_string_literal: true
+          require 'fileutils'
+
+          def flutter_root
+            generated_xcode_build_settings_path = File.expand_path(File.join(__dir__, "..", "Flutter", "Generated.xcconfig"))
+            unless File.exist?(generated_xcode_build_settings_path)
+              raise "\#{generated_xcode_build_settings_path} must exist. Run 'flutter pub get' first"
+            end
+            File.read(generated_xcode_build_settings_path).match(/FLUTTER_ROOT\=(.*)/)[1]
+          end
+
+          def parse_KV_file(file, delimiter='=')
+            map = {}
+            File.foreach(file) do |line|
+              next if line.strip.empty? || line.strip.start_with?('#')
+              key, value = line.strip.split(delimiter, 2)
+              map[key.strip] = value.strip if key && value
+            end
+            map
+          end
+
+          def symlink_flutter_frameworks
+            symlink_dir = File.expand_path(File.join(__dir__, '..', 'Flutter'))
+            FileUtils.mkdir_p(symlink_dir)
+          end
+          EOT
 
       - name: تثبيت CocoaPods
         script: |
@@ -24,11 +56,15 @@ workflows:
           pod install
           cd ..
 
-      - name: إنشاء ملف App Store Connect Key
+      - name: إنشاء مفتاح App Store
         script: |
           echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-      - name: Build iOS Release
+      - name: Build iOS (بدون توقيع)
+        script: |
+          flutter build ios --release --no-codesign
+
+      - name: إنشاء IPA
         script: |
           flutter build ipa --release
 
