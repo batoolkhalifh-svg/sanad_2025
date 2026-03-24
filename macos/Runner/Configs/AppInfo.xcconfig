@@ -8,7 +8,7 @@
 PRODUCT_NAME = sanad_2025
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.sanad2025
+PRODUCT_BUNDLE_IDENTIFIER = com.sanad.edu
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
