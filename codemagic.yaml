@@ -27,7 +27,7 @@ workflows:
 
       - name: Build iOS IPA for App Store
         script: |
-          flutter build ipa --release --export-method app-store --build-name=1.0.2 --build-number=1
+          flutter build ipa --release --export-method app-store
 
     artifacts:
       - build/ios/ipa/*.ipa
