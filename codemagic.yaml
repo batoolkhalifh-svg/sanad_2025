@@ -7,7 +7,7 @@ workflows:
       flutter: stable
       xcode: latest
       groups:
-        - ios_config
+        - ios_config   # تأكدي أنك ضفتِ المتغيرات هنا: APP_STORE_CONNECT_PRIVATE_KEY, KEY_IDENTIFIER, ISSUER_ID, BUNDLE_ID
 
     scripts:
       - name: Clean & Get packages
@@ -21,19 +21,17 @@ workflows:
           pod install
           cd ..
 
-      - name: Create App Store Key
-        script: |
-          echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
-
       - name: Build iOS IPA for App Store
         script: |
-          flutter build ipa --release
+          flutter build ipa --release --export-method app-store
 
     artifacts:
       - build/ios/ipa/*.ipa
 
     publishing:
       app_store_connect:
-        api_key: AuthKey.p8
-        key_id: ${APP_STORE_CONNECT_KEY_IDENTIFIER}
-        issuer_id: ${APP_STORE_CONNECT_ISSUER_ID}
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        bundle_id: $BUNDLE_ID
+        release_type: AFTER_APPROVAL  # خيار تلقائي بعد الموافقة على التطبيق
