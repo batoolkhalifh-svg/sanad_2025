@@ -7,7 +7,7 @@ workflows:
       flutter: stable
       xcode: latest
       groups:
-        - ios_config
+        - ios_config   # هاد الـ group فيه المتغيرات: APP_STORE_CONNECT_PRIVATE_KEY, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_ISSUER_ID
 
     scripts:
       - name: Clean & Get packages
@@ -21,13 +21,13 @@ workflows:
           pod install
           cd ..
 
-      - name: Create App Store Key
+      - name: Create App Store API Key
         script: |
           echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > AuthKey.p8
 
-      - name: Build iOS Release
+      - name: Build iOS IPA for App Store
         script: |
-          flutter build ipa --release
+          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
